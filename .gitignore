@@ -1,0 +1,21 @@
+# === Backend (Rails) ===
+backend/tmp/
+backend/log/
+backend/storage/
+backend/config/master.key
+backend/config/credentials/*.key
+backend/.bundle/
+backend/vendor/bundle/
+
+# === Frontend (React) ===
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.production.local
+
+# === General ===
+.DS_Store
+*.swp
+*.swo
+*~
+.env
