@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
 import { ArrowRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -120,20 +120,10 @@ export default function OnboardingTooltips() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Position tooltip on step change
-  useEffect(() => {
+  // Position tooltip synchronously before paint so content + position update together
+  useLayoutEffect(() => {
     if (!visible) return;
-
-    // Scroll target into view
-    const el = document.querySelector(
-      `[data-onboarding="${steps[currentStep].target}"]`
-    );
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      // Reposition after scroll settles
-      const timer = setTimeout(positionTooltip, 300);
-      return () => clearTimeout(timer);
-    }
+    positionTooltip();
   }, [currentStep, visible, positionTooltip]);
 
   // Reposition on resize
@@ -236,15 +226,9 @@ export default function OnboardingTooltips() {
 function SpotlightHighlight({ target }: { target: string }) {
   const [rect, setRect] = useState<DOMRect | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = document.querySelector(`[data-onboarding="${target}"]`);
-    if (el) {
-      const update = () => setRect(el.getBoundingClientRect());
-      update();
-      // Re-measure after scroll
-      const timer = setTimeout(update, 350);
-      return () => clearTimeout(timer);
-    }
+    if (el) setRect(el.getBoundingClientRect());
   }, [target]);
 
   if (!rect) return null;
