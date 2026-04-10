@@ -51,6 +51,18 @@ module Api
         head :no_content
       end
 
+      # GET /api/v1/employees/countries
+      def countries
+        countries = Employee.distinct.pluck(:country).sort
+        render json: { countries: countries }
+      end
+
+      # GET /api/v1/employees/job_titles
+      def job_titles
+        job_titles = Employee.distinct.pluck(:job_title).sort
+        render json: { job_titles: job_titles }
+      end
+
       private
 
       def set_employee

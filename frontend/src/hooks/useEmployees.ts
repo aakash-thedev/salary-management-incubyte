@@ -1,6 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchEmployees,
+  fetchCountries,
+  fetchJobTitles,
   createEmployee,
   updateEmployee,
   deleteEmployee,
@@ -15,6 +17,22 @@ export function useEmployees(params: EmployeeListParams = {}) {
   });
 }
 
+export function useCountries() {
+  return useQuery({
+    queryKey: ["countries"],
+    queryFn: fetchCountries,
+    staleTime: 60_000, // Countries change rarely — cache for 1 minute
+  });
+}
+
+export function useJobTitles() {
+  return useQuery({
+    queryKey: ["jobTitles"],
+    queryFn: fetchJobTitles,
+    staleTime: 60_000,
+  });
+}
+
 export function useCreateEmployee() {
   const queryClient = useQueryClient();
 
@@ -22,6 +40,9 @@ export function useCreateEmployee() {
     mutationFn: (data: EmployeeFormData) => createEmployee(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
+      queryClient.invalidateQueries({ queryKey: ["insights"] });
+      queryClient.invalidateQueries({ queryKey: ["countries"] });
+      queryClient.invalidateQueries({ queryKey: ["jobTitles"] });
     },
   });
 }
@@ -39,6 +60,7 @@ export function useUpdateEmployee() {
     }) => updateEmployee(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
+      queryClient.invalidateQueries({ queryKey: ["insights"] });
     },
   });
 }
@@ -50,6 +72,9 @@ export function useDeleteEmployee() {
     mutationFn: (id: number) => deleteEmployee(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
+      queryClient.invalidateQueries({ queryKey: ["insights"] });
+      queryClient.invalidateQueries({ queryKey: ["countries"] });
+      queryClient.invalidateQueries({ queryKey: ["jobTitles"] });
     },
   });
 }

@@ -166,4 +166,37 @@ RSpec.describe "Api::V1::Employees", type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
+
+  describe "GET /api/v1/employees/countries" do
+    before do
+      create(:employee, country: "United States")
+      create(:employee, country: "India")
+      create(:employee, country: "India") # duplicate
+      create(:employee, country: "Germany")
+    end
+
+    it "returns a sorted list of distinct countries" do
+      get "/api/v1/employees/countries"
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json["countries"]).to eq(["Germany", "India", "United States"])
+    end
+  end
+
+  describe "GET /api/v1/employees/job_titles" do
+    before do
+      create(:employee, job_title: "Software Engineer")
+      create(:employee, job_title: "Product Manager")
+      create(:employee, job_title: "Software Engineer") # duplicate
+    end
+
+    it "returns a sorted list of distinct job titles" do
+      get "/api/v1/employees/job_titles"
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json["job_titles"]).to eq(["Product Manager", "Software Engineer"])
+    end
+  end
 end

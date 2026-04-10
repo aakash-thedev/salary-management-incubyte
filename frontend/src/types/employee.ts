@@ -13,12 +13,12 @@ export interface Employee {
 export interface EmployeeFormData {
   full_name: string;
   job_title: string;
-  department: string;
+  department?: string;
   country: string;
   salary: number;
   currency: string;
   employment_type: string;
-  hired_on: string;
+  hired_on?: string;
 }
 
 export interface PaginationMeta {

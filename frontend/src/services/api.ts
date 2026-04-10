@@ -59,6 +59,22 @@ export async function deleteEmployee(id: number): Promise<void> {
   await api.delete(`/api/v1/employees/${id}`);
 }
 
+// --- Dropdown Data ---
+
+export async function fetchCountries(): Promise<string[]> {
+  const { data } = await api.get<{ countries: string[] }>(
+    "/api/v1/employees/countries"
+  );
+  return data.countries;
+}
+
+export async function fetchJobTitles(): Promise<string[]> {
+  const { data } = await api.get<{ job_titles: string[] }>(
+    "/api/v1/employees/job_titles"
+  );
+  return data.job_titles;
+}
+
 // --- Insights ---
 
 export interface InsightsParams {
