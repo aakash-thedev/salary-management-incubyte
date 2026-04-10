@@ -41,9 +41,9 @@ export default function InsightsPage() {
       {/* Filters */}
       <div className="flex flex-wrap items-end gap-4">
         <div className="space-y-1.5">
-          <label className="text-sm font-medium">Country</label>
+          <label id="insights-country-label" className="text-sm font-medium">Country</label>
           <Select value={country || undefined} onValueChange={handleCountryChange}>
-            <SelectTrigger className="w-[250px]">
+            <SelectTrigger className="w-[250px]" aria-labelledby="insights-country-label">
               <SelectValue placeholder="Select a country..." />
             </SelectTrigger>
             <SelectContent>

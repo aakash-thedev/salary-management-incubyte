@@ -91,10 +91,11 @@ export default function EmployeesPage() {
       {/* Filters */}
       <div className="flex items-end gap-3">
         <div className="relative max-w-sm flex-1 space-y-1.5">
-          <label className="text-sm font-medium text-muted-foreground">Search</label>
+          <label htmlFor="employee-search" className="text-sm font-medium text-muted-foreground">Search</label>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
+              id="employee-search"
               placeholder="Search by name..."
               value={search}
               onChange={(e) => handleSearchChange(e.target.value)}
@@ -103,9 +104,9 @@ export default function EmployeesPage() {
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="text-sm font-medium text-muted-foreground">Country</label>
+          <label id="country-label" className="text-sm font-medium text-muted-foreground">Country</label>
           <Select value={country || "all"} onValueChange={handleCountryChange}>
-            <SelectTrigger className="w-[200px]">
+            <SelectTrigger className="w-[200px]" aria-labelledby="country-label">
               <SelectValue placeholder="All Countries" />
             </SelectTrigger>
             <SelectContent>
@@ -119,9 +120,9 @@ export default function EmployeesPage() {
           </Select>
         </div>
         <div className="space-y-1.5">
-          <label className="text-sm font-medium text-muted-foreground">Type</label>
+          <label id="type-label" className="text-sm font-medium text-muted-foreground">Type</label>
           <Select value={employmentType || "all"} onValueChange={handleEmploymentTypeChange}>
-            <SelectTrigger className="w-[160px]">
+            <SelectTrigger className="w-[160px]" aria-labelledby="type-label">
               <SelectValue placeholder="All Types" />
             </SelectTrigger>
             <SelectContent>
