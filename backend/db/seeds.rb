@@ -86,6 +86,11 @@ def random_hire_date
 end
 
 # --- Clear existing data (idempotent) ---
+if Employee.count >= EMPLOYEE_COUNT
+  puts "Database already seeded (#{Employee.count} employees found). Skipping."
+  return
+end
+
 puts "\nClearing existing employees..."
 Employee.delete_all
 
