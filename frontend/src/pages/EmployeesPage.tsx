@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { EMPLOYMENT_TYPES } from "@/lib/constants";
 import { Plus, Search, X } from "lucide-react";
 import type { Employee } from "@/types/employee";
 
@@ -21,6 +22,7 @@ export default function EmployeesPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
+  const [employmentType, setEmploymentType] = useState("");
 
   // Modal state
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
@@ -33,6 +35,7 @@ export default function EmployeesPage() {
     page,
     search: debouncedSearch || undefined,
     country: country || undefined,
+    employment_type: employmentType || undefined,
   });
 
   const { data: countries } = useCountries();
@@ -45,6 +48,11 @@ export default function EmployeesPage() {
 
   const handleCountryChange = (value: string | null) => {
     setCountry(!value || value === "all" ? "" : value);
+    setPage(1);
+  };
+
+  const handleEmploymentTypeChange = (value: string | null) => {
+    setEmploymentType(!value || value === "all" ? "" : value);
     setPage(1);
   };
 
@@ -62,7 +70,7 @@ export default function EmployeesPage() {
     setShowForm(true);
   };
 
-  const hasFilters = search || country;
+  const hasFilters = search || country || employmentType;
 
   return (
     <div className="space-y-6">
@@ -81,37 +89,60 @@ export default function EmployeesPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-3">
-        <div className="relative max-w-sm flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search by name..."
-            value={search}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className="pl-9"
-          />
+      <div className="flex items-end gap-3">
+        <div className="relative max-w-sm flex-1 space-y-1.5">
+          <label className="text-sm font-medium text-muted-foreground">Search</label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Search by name..."
+              value={search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="pl-9"
+            />
+          </div>
         </div>
-        <Select value={country || "all"} onValueChange={handleCountryChange}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="All Countries" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Countries</SelectItem>
-            {countries?.map((c) => (
-              <SelectItem key={c} value={c}>
-                {c}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-muted-foreground">Country</label>
+          <Select value={country || "all"} onValueChange={handleCountryChange}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="All Countries" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Countries</SelectItem>
+              {countries?.map((c) => (
+                <SelectItem key={c} value={c}>
+                  {c}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium text-muted-foreground">Type</label>
+          <Select value={employmentType || "all"} onValueChange={handleEmploymentTypeChange}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="All Types" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Types</SelectItem>
+              {EMPLOYMENT_TYPES.map((type) => (
+                <SelectItem key={type.value} value={type.value}>
+                  {type.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         {hasFilters && (
           <Button
             variant="ghost"
             size="sm"
-            className="gap-1.5 text-muted-foreground"
+            className="gap-1.5 text-muted-foreground cursor-pointer"
             onClick={() => {
               setSearch("");
               setCountry("");
+              setEmploymentType("");
               setPage(1);
             }}
           >

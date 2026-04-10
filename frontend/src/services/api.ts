@@ -19,6 +19,7 @@ export interface EmployeeListParams {
   page?: number;
   country?: string;
   search?: string;
+  employment_type?: string;
 }
 
 export async function fetchEmployees(
