@@ -8,8 +8,8 @@ A full-stack salary management tool built as a technical assessment for **Incuby
 
 | Service | URL |
 |---|---|
-| Frontend | _Deploying to Vercel_ |
-| Backend API | _Deploying to Render_ |
+| Frontend | https://salary-management-incubyte.vercel.app |
+| Backend API | https://salary-management-api-2upj.onrender.com |
 
 ---
 
