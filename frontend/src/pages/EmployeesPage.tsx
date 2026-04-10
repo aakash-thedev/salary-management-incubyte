@@ -4,6 +4,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import EmployeeTable from "@/components/EmployeeTable";
 import EmployeePagination from "@/components/EmployeePagination";
 import EmployeeForm from "@/components/EmployeeForm";
+import DeleteEmployeeDialog from "@/components/DeleteEmployeeDialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +24,7 @@ export default function EmployeesPage() {
   // Modal state
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [_deletingEmployee, setDeletingEmployee] = useState<Employee | null>(null);
+  const [deletingEmployee, setDeletingEmployee] = useState<Employee | null>(null);
 
   const debouncedSearch = useDebounce(search, 300);
 
@@ -143,6 +144,13 @@ export default function EmployeesPage() {
           setEditingEmployee(null);
         }}
         employee={editingEmployee}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteEmployeeDialog
+        open={deletingEmployee !== null}
+        onClose={() => setDeletingEmployee(null)}
+        employee={deletingEmployee}
       />
     </div>
   );
