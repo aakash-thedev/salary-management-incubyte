@@ -98,7 +98,7 @@ export default function EmployeeTable({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:text-primary"
+                    className="h-8 w-8 text-muted-foreground hover:text-primary cursor-pointer"
                     onClick={() => onEdit(employee)}
                   >
                     <Pencil className="h-4 w-4" />
@@ -106,7 +106,7 @@ export default function EmployeeTable({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                    className="h-8 w-8 text-muted-foreground hover:text-destructive cursor-pointer"
                     onClick={() => onDelete(employee)}
                   >
                     <Trash2 className="h-4 w-4" />

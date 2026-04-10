@@ -216,7 +216,7 @@ export default function EmployeeForm({
                 id="salary"
                 type="number"
                 min="1"
-                step="500"
+                step="any"
                 value={form.salary || ""}
                 onChange={(e) =>
                   updateField("salary", parseFloat(e.target.value) || 0)
@@ -287,10 +287,11 @@ export default function EmployeeForm({
               variant="outline"
               onClick={onClose}
               disabled={isPending}
+              className="cursor-pointer"
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending} className="cursor-pointer">
               {isPending
                 ? "Saving..."
                 : isEditing

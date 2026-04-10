@@ -74,7 +74,7 @@ export default function EmployeesPage() {
             Manage your organization&apos;s employee records.
           </p>
         </div>
-        <Button onClick={handleAddNew} className="gap-2">
+        <Button onClick={handleAddNew} className="gap-2 cursor-pointer">
           <Plus className="h-4 w-4" />
           Add Employee
         </Button>
