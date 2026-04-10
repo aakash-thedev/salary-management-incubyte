@@ -6,6 +6,18 @@ export interface JobTitleSalary {
   headcount: number;
 }
 
+export interface EmploymentTypeBreakdown {
+  employment_type: string;
+  avg_salary: number;
+  headcount: number;
+}
+
+export interface DepartmentSummary {
+  department: string;
+  avg_salary: number;
+  headcount: number;
+}
+
 export interface SalaryInsights {
   min_salary: number | null;
   max_salary: number | null;
@@ -15,6 +27,8 @@ export interface SalaryInsights {
   salary_by_job_title: JobTitleSalary[];
   top_earners: Employee[];
   job_title_avg_salary?: number | null;
+  employment_type_breakdown: EmploymentTypeBreakdown[];
+  department_summary: DepartmentSummary[];
 }
 
 export interface InsightsResponse {

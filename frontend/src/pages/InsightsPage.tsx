@@ -4,6 +4,8 @@ import { useInsights } from "@/hooks/useInsights";
 import InsightCards from "@/components/InsightCards";
 import JobTitleBreakdown from "@/components/JobTitleBreakdown";
 import TopEarners from "@/components/TopEarners";
+import EmploymentTypeBreakdown from "@/components/EmploymentTypeBreakdown";
+import DepartmentSummary from "@/components/DepartmentSummary";
 import { BarChart3 } from "lucide-react";
 import {
   Select,
@@ -130,6 +132,15 @@ export default function InsightsPage() {
         <div className="space-y-6">
           {/* Stat Cards */}
           <InsightCards insights={insights} />
+
+          {/* Two-column layout: Employment Type + Department */}
+          <div className="grid gap-6 lg:grid-cols-2">
+            <EmploymentTypeBreakdown
+              data={insights.employment_type_breakdown}
+              totalHeadcount={insights.headcount}
+            />
+            <DepartmentSummary data={insights.department_summary} />
+          </div>
 
           {/* Two-column layout: Job Title Breakdown + Top Earners */}
           <div className="grid gap-6 lg:grid-cols-2">
