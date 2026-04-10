@@ -9,6 +9,7 @@ module Api
 
         service = SalaryInsightsService.new(country: params[:country])
         insights = service.country_insights
+        insights[:currency] = service.primary_currency
 
         # Add job title breakdown
         insights[:salary_by_job_title] = service.salary_by_job_title

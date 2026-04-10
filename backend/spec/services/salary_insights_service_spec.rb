@@ -122,6 +122,18 @@ RSpec.describe SalaryInsightsService do
     end
   end
 
+  describe "#primary_currency" do
+    it "returns the most common currency for the country" do
+      currency = described_class.new(country: "United States").primary_currency
+      expect(currency).to eq("USD")
+    end
+
+    it "returns nil when no employees exist in the country" do
+      currency = described_class.new(country: "Antarctica").primary_currency
+      expect(currency).to be_nil
+    end
+  end
+
   describe "#employment_type_breakdown" do
     it "returns count and average salary grouped by employment type" do
       breakdown = described_class.new(country: "United States").employment_type_breakdown

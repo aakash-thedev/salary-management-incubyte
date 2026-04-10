@@ -21,6 +21,13 @@ RSpec.describe "Api::V1::Insights", type: :request do
       expect(json["insights"]["headcount"]).to eq(3)
     end
 
+    it "returns the primary currency for the country" do
+      get "/api/v1/insights", params: { country: "United States" }
+
+      json = JSON.parse(response.body)
+      expect(json["insights"]["currency"]).to eq("USD")
+    end
+
     it "returns salary breakdown by job title" do
       get "/api/v1/insights", params: { country: "United States" }
 

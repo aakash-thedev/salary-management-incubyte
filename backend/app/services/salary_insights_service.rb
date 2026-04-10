@@ -53,6 +53,11 @@ class SalaryInsightsService
       end
   end
 
+  # Returns the most common currency for this country
+  def primary_currency
+    @scope.group(:currency).order(Arel.sql("COUNT(*) DESC")).limit(1).pluck(:currency).first
+  end
+
   # Returns count and average salary grouped by employment type
   def employment_type_breakdown
     @scope
