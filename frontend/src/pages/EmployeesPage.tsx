@@ -17,6 +17,7 @@ import {
 import { EMPLOYMENT_TYPES } from "@/lib/constants";
 import { Plus, Search, X } from "lucide-react";
 import type { Employee } from "@/types/employee";
+import OnboardingTooltips from "@/components/OnboardingTooltips";
 
 export default function EmployeesPage() {
   const [page, setPage] = useState(1);
@@ -82,14 +83,14 @@ export default function EmployeesPage() {
             Manage your organization&apos;s employee records.
           </p>
         </div>
-        <Button onClick={handleAddNew} className="gap-2 cursor-pointer">
+        <Button data-onboarding="add-employee" onClick={handleAddNew} className="gap-2 cursor-pointer">
           <Plus className="h-4 w-4" />
           Add Employee
         </Button>
       </div>
 
       {/* Filters */}
-      <div className="flex items-end gap-3">
+      <div data-onboarding="filters" className="flex items-end gap-3">
         <div className="relative max-w-sm flex-1 space-y-1.5">
           <label htmlFor="employee-search" className="text-sm font-medium text-muted-foreground">Search</label>
           <div className="relative">
@@ -200,6 +201,9 @@ export default function EmployeesPage() {
         onClose={() => setDeletingEmployee(null)}
         employee={deletingEmployee}
       />
+
+      {/* One-time onboarding tooltips */}
+      {data && <OnboardingTooltips />}
     </div>
   );
 }

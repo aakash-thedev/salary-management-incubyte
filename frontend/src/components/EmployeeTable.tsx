@@ -62,7 +62,7 @@ export default function EmployeeTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {employees.map((employee) => (
+          {employees.map((employee, index) => (
             <TableRow
               key={employee.id}
               className="transition-colors hover:bg-muted/30"
@@ -71,6 +71,7 @@ export default function EmployeeTable({
                 <Link
                   to={`/employees/${employee.id}`}
                   className="font-medium hover:text-primary hover:underline underline-offset-2 transition-colors"
+                  {...(index === 0 ? { "data-onboarding": "employee-name" } : {})}
                 >
                   {employee.full_name}
                 </Link>

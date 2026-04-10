@@ -22,7 +22,7 @@ export default function Layout() {
               Salary Manager
             </span>
           </Link>
-          <nav className="flex items-center gap-1">
+          <nav data-onboarding="nav" className="flex items-center gap-1">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               const Icon = item.icon;
