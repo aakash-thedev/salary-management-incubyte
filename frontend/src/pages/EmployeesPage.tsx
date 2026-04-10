@@ -3,6 +3,7 @@ import { useEmployees, useCountries } from "@/hooks/useEmployees";
 import { useDebounce } from "@/hooks/useDebounce";
 import EmployeeTable from "@/components/EmployeeTable";
 import EmployeePagination from "@/components/EmployeePagination";
+import EmployeeForm from "@/components/EmployeeForm";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,9 +20,9 @@ export default function EmployeesPage() {
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
 
-  // Modal state — will be used in next commit for create/edit forms
-  const [_editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
-  const [_showForm, setShowForm] = useState(false);
+  // Modal state
+  const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
+  const [showForm, setShowForm] = useState(false);
   const [_deletingEmployee, setDeletingEmployee] = useState<Employee | null>(null);
 
   const debouncedSearch = useDebounce(search, 300);
@@ -133,6 +134,16 @@ export default function EmployeesPage() {
           <EmployeePagination meta={data.meta} onPageChange={setPage} />
         </>
       )}
+
+      {/* Create/Edit Form Modal */}
+      <EmployeeForm
+        open={showForm}
+        onClose={() => {
+          setShowForm(false);
+          setEditingEmployee(null);
+        }}
+        employee={editingEmployee}
+      />
     </div>
   );
 }
