@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchEmployees,
+  fetchEmployee,
   fetchCountries,
   fetchJobTitles,
   createEmployee,
@@ -14,6 +15,14 @@ export function useEmployees(params: EmployeeListParams = {}) {
   return useQuery({
     queryKey: ["employees", params],
     queryFn: () => fetchEmployees(params),
+  });
+}
+
+export function useEmployee(id: number) {
+  return useQuery({
+    queryKey: ["employee", id],
+    queryFn: () => fetchEmployee(id),
+    enabled: id > 0,
   });
 }
 

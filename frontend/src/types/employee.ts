@@ -32,8 +32,16 @@ export interface EmployeesResponse {
   meta: PaginationMeta;
 }
 
+export interface SalaryComparison {
+  country_avg_salary: number | null;
+  country_headcount: number;
+  role_avg_salary: number | null;
+  role_headcount: number;
+}
+
 export interface EmployeeResponse {
   employee: Employee;
+  comparison?: SalaryComparison;
 }
 
 export interface EmployeeErrors {
