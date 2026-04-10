@@ -48,6 +48,17 @@ RSpec.describe "Api::V1::Employees", type: :request do
       expect(json["employees"].first["full_name"]).to eq("Unique SearchName")
     end
 
+    it "filters employees by employment type" do
+      create(:employee, employment_type: "contract", full_name: "Contractor Joe", country: "Canada")
+
+      get "/api/v1/employees", params: { employment_type: "contract" }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json["employees"].length).to eq(1)
+      expect(json["employees"].first["employment_type"]).to eq("contract")
+    end
+
     it "returns an empty list when no employees match" do
       get "/api/v1/employees", params: { country: "Antarctica" }
 

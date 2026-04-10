@@ -8,6 +8,7 @@ module Api
         employees = Employee.all
         employees = employees.where(country: params[:country]) if params[:country].present?
         employees = employees.where("full_name ILIKE ?", "%#{params[:search]}%") if params[:search].present?
+        employees = employees.where(employment_type: params[:employment_type]) if params[:employment_type].present?
         employees = employees.order(created_at: :desc).page(params[:page]).per(25)
 
         render json: {
