@@ -106,9 +106,10 @@ GET    /api/v1/employees/job_titles   — List distinct job titles (for dropdown
 ### Frontend Routes
 
 ```
-/employees          — Paginated employee list with filters and inline pagination
-/employees/:id      — Employee detail page with salary benchmarks
-/insights           — Salary insights dashboard
+/               — Branded landing page (Incubyte hero, feature cards, Get Started CTA)
+/employees      — Paginated employee list with filters, inline pagination, onboarding tooltips
+/employees/:id  — Employee detail page with salary benchmarks
+/insights       — Salary insights dashboard
 ```
 
 ## Key Architectural Decisions

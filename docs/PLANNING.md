@@ -45,6 +45,11 @@ This tool centralizes employee data with instant access to key salary metrics, e
 - Bulk insert for performance (target: <10 seconds)
 - Idempotent — safe to run repeatedly
 
+### First-Time User Experience
+- **Branded landing page** — Full-screen hero with Incubyte branding, platform description, and "Get Started" CTA with animated entry
+- **Loading transition** — Step-by-step loading screen (database → employees → dashboard) plays on first entry
+- **One-time onboarding** — 4-step guided tooltip tour on first visit to `/employees` covering navigation tabs, clickable employee names, filters, and the Add Employee button. Completion saved to `localStorage` — never shows again.
+
 ### Deployment
 - Backend deployed to Render (Rails API + PostgreSQL)
 - Frontend deployed to Vercel (React static build)
