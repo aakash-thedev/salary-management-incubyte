@@ -43,20 +43,21 @@ DEPARTMENTS = [
   "Design", "Quality Assurance"
 ].freeze
 
-# Country with currency and salary range (annual, in local-equivalent USD)
+# Country with currency and realistic salary ranges in local currency
+# Ranges reflect actual market rates (approximate, 2025)
 COUNTRIES = {
-  "United States"  => { currency: "USD", min: 50_000, max: 200_000 },
-  "United Kingdom" => { currency: "GBP", min: 35_000, max: 150_000 },
-  "India"          => { currency: "INR", min: 8_000,  max: 80_000  },
-  "Germany"        => { currency: "EUR", min: 40_000, max: 160_000 },
-  "Canada"         => { currency: "CAD", min: 45_000, max: 170_000 },
-  "Australia"      => { currency: "AUD", min: 50_000, max: 180_000 },
-  "France"         => { currency: "EUR", min: 35_000, max: 140_000 },
-  "Singapore"      => { currency: "SGD", min: 40_000, max: 160_000 },
-  "Netherlands"    => { currency: "EUR", min: 38_000, max: 150_000 },
-  "Brazil"         => { currency: "BRL", min: 10_000, max: 90_000  },
-  "Japan"          => { currency: "JPY", min: 30_000, max: 140_000 },
-  "South Korea"    => { currency: "KRW", min: 25_000, max: 120_000 }
+  "United States"  => { currency: "USD", min: 50_000,      max: 200_000,      round_to: 500   },
+  "United Kingdom" => { currency: "GBP", min: 28_000,      max: 120_000,      round_to: 500   },
+  "India"          => { currency: "INR", min: 400_000,     max: 5_000_000,    round_to: 10_000 },
+  "Germany"        => { currency: "EUR", min: 38_000,      max: 150_000,      round_to: 500   },
+  "Canada"         => { currency: "CAD", min: 50_000,      max: 200_000,      round_to: 500   },
+  "Australia"      => { currency: "AUD", min: 55_000,      max: 220_000,      round_to: 500   },
+  "France"         => { currency: "EUR", min: 32_000,      max: 130_000,      round_to: 500   },
+  "Singapore"      => { currency: "SGD", min: 48_000,      max: 200_000,      round_to: 500   },
+  "Netherlands"    => { currency: "EUR", min: 35_000,      max: 140_000,      round_to: 500   },
+  "Brazil"         => { currency: "BRL", min: 48_000,      max: 480_000,      round_to: 1_000 },
+  "Japan"          => { currency: "JPY", min: 4_000_000,   max: 20_000_000,   round_to: 50_000 },
+  "South Korea"    => { currency: "KRW", min: 35_000_000,  max: 150_000_000,  round_to: 100_000 }
 }.freeze
 
 EMPLOYMENT_TYPES = %w[full_time part_time contract].freeze
@@ -73,10 +74,10 @@ def weighted_sample(items, weights)
   items.last
 end
 
-# --- Helper: realistic salary with some variance ---
-def random_salary(min, max)
+# --- Helper: realistic salary with currency-appropriate rounding ---
+def random_salary(min, max, round_to = 500)
   salary = rand(min..max)
-  (salary / 500.0).round * 500 # Round to nearest 500 for realism
+  (salary / round_to.to_f).round * round_to
 end
 
 # --- Helper: random hire date within the last 10 years ---
@@ -105,7 +106,7 @@ total_time = Benchmark.measure do
         job_title:       JOB_TITLES.sample,
         department:      DEPARTMENTS.sample,
         country:         country_name,
-        salary:          random_salary(country_data[:min], country_data[:max]),
+        salary:          random_salary(country_data[:min], country_data[:max], country_data[:round_to]),
         currency:        country_data[:currency],
         employment_type: weighted_sample(EMPLOYMENT_TYPES, EMPLOYMENT_TYPE_WEIGHTS),
         hired_on:        random_hire_date,
