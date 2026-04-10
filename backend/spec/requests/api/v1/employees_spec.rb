@@ -80,6 +80,23 @@ RSpec.describe "Api::V1::Employees", type: :request do
       expect(json["employee"]["salary"]).to eq("95000.0")
     end
 
+    it "includes salary comparison data" do
+      create(:employee, country: "Germany", job_title: "Designer", salary: 60_000)
+      create(:employee, country: "Germany", job_title: "Designer", salary: 80_000)
+      employee = create(:employee, full_name: "Target", country: "Germany", job_title: "Designer", salary: 70_000)
+
+      get "/api/v1/employees/#{employee.id}"
+
+      json = JSON.parse(response.body)
+      comparison = json["comparison"]
+
+      expect(comparison).to be_present
+      expect(comparison["country_avg_salary"]).to eq(70_000.0)
+      expect(comparison["country_headcount"]).to eq(3)
+      expect(comparison["role_avg_salary"]).to eq(70_000.0)
+      expect(comparison["role_headcount"]).to eq(3)
+    end
+
     it "returns 404 for a non-existent employee" do
       get "/api/v1/employees/99999"
 

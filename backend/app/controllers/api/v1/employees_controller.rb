@@ -23,7 +23,20 @@ module Api
 
       # GET /api/v1/employees/:id
       def show
-        render json: { employee: @employee.as_json }
+        country_scope = Employee.where(country: @employee.country)
+        role_scope = country_scope.where(job_title: @employee.job_title)
+
+        comparison = {
+          country_avg_salary: country_scope.average(:salary)&.to_f&.round(2),
+          country_headcount: country_scope.count,
+          role_avg_salary: role_scope.average(:salary)&.to_f&.round(2),
+          role_headcount: role_scope.count
+        }
+
+        render json: {
+          employee: @employee.as_json,
+          comparison: comparison
+        }
       end
 
       # POST /api/v1/employees
