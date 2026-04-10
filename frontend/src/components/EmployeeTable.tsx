@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { Employee } from "@/types/employee";
 import { formatSalary, formatDate, formatEmploymentType } from "@/lib/formatters";
 import { Badge } from "@/components/ui/badge";
@@ -33,8 +33,6 @@ export default function EmployeeTable({
   onEdit,
   onDelete,
 }: EmployeeTableProps) {
-  const navigate = useNavigate();
-
   if (employees.length === 0) {
     return (
       <div className="flex h-48 items-center justify-center rounded-xl border border-dashed bg-card">
@@ -70,12 +68,12 @@ export default function EmployeeTable({
               className="transition-colors hover:bg-muted/30"
             >
               <TableCell>
-                <button
-                  className="font-medium text-left hover:text-primary hover:underline underline-offset-2 cursor-pointer transition-colors"
-                  onClick={() => navigate(`/employees/${employee.id}`)}
+                <Link
+                  to={`/employees/${employee.id}`}
+                  className="font-medium hover:text-primary hover:underline underline-offset-2 transition-colors"
                 >
                   {employee.full_name}
-                </button>
+                </Link>
               </TableCell>
               <TableCell className="text-muted-foreground">
                 {employee.job_title}
