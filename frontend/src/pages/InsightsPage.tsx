@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useCountries, useJobTitles } from "@/hooks/useEmployees";
+import { useCountries } from "@/hooks/useEmployees";
 import { useInsights } from "@/hooks/useInsights";
 import InsightCards from "@/components/InsightCards";
 import JobTitleBreakdown from "@/components/JobTitleBreakdown";
@@ -17,25 +17,15 @@ import {
 
 export default function InsightsPage() {
   const [country, setCountry] = useState("");
-  const [jobTitle, setJobTitle] = useState("");
 
   const { data: countries, isLoading: countriesLoading } = useCountries();
-  const { data: jobTitles } = useJobTitles();
 
-  const { data: insightsData, isLoading, isError } = useInsights({
-    country,
-    job_title: jobTitle || undefined,
-  });
+  const { data: insightsData, isLoading, isError } = useInsights({ country });
 
   const insights = insightsData?.insights;
 
   const handleCountryChange = (value: string | null) => {
     setCountry(value || "");
-    setJobTitle(""); // Reset job title when country changes
-  };
-
-  const handleJobTitleChange = (value: string | null) => {
-    setJobTitle(!value || value === "all" ? "" : value);
   };
 
   return (
@@ -71,28 +61,6 @@ export default function InsightsPage() {
             </SelectContent>
           </Select>
         </div>
-
-        {country && (
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium">Job Title (optional)</label>
-            <Select
-              value={jobTitle || "all"}
-              onValueChange={handleJobTitleChange}
-            >
-              <SelectTrigger className="w-[250px]">
-                <SelectValue placeholder="All Job Titles" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Job Titles</SelectItem>
-                {jobTitles?.map((title) => (
-                  <SelectItem key={title} value={title}>
-                    {title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
       </div>
 
       {/* No Country Selected */}
@@ -144,11 +112,7 @@ export default function InsightsPage() {
 
           {/* Two-column layout: Job Title Breakdown + Top Earners */}
           <div className="grid gap-6 lg:grid-cols-2">
-            <JobTitleBreakdown
-              data={insights.salary_by_job_title}
-              jobTitleAvgSalary={insights.job_title_avg_salary}
-              selectedJobTitle={jobTitle}
-            />
+            <JobTitleBreakdown data={insights.salary_by_job_title} />
             <TopEarners employees={insights.top_earners} />
           </div>
         </div>

@@ -80,7 +80,6 @@ export async function fetchJobTitles(): Promise<string[]> {
 
 export interface InsightsParams {
   country: string;
-  job_title?: string;
 }
 
 export async function fetchInsights(

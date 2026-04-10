@@ -26,7 +26,6 @@ export interface SalaryInsights {
   headcount: number;
   salary_by_job_title: JobTitleSalary[];
   top_earners: Employee[];
-  job_title_avg_salary?: number | null;
   employment_type_breakdown: EmploymentTypeBreakdown[];
   department_summary: DepartmentSummary[];
 }

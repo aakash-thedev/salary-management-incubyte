@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { JobTitleSalary } from "@/types/insights";
 import { formatSalary } from "@/lib/formatters";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -15,16 +15,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface JobTitleBreakdownProps {
   data: JobTitleSalary[];
-  jobTitleAvgSalary?: number | null;
-  selectedJobTitle?: string;
 }
 
-export default function JobTitleBreakdown({
-  data,
-  jobTitleAvgSalary,
-  selectedJobTitle,
-}: JobTitleBreakdownProps) {
+export default function JobTitleBreakdown({ data }: JobTitleBreakdownProps) {
   const [filter, setFilter] = useState("");
+  const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
 
   const filteredData = data.filter((row) =>
     row.job_title.toLowerCase().includes(filter.toLowerCase())
@@ -35,10 +30,21 @@ export default function JobTitleBreakdown({
     (a, b) => b.avg_salary - a.avg_salary
   );
 
+  const selectedRow = selectedTitle
+    ? data.find((row) => row.job_title === selectedTitle)
+    : null;
+
+  const handleRowClick = (jobTitle: string) => {
+    setSelectedTitle((prev) => (prev === jobTitle ? null : jobTitle));
+  };
+
   return (
     <Card className="shadow-sm">
       <CardHeader>
         <CardTitle className="text-lg">Salary by Job Title</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Click a row to inspect details
+        </p>
         <div className="relative pt-2">
           <Search className="absolute left-3 top-1/2 h-4 w-4 translate-y-[-25%] text-muted-foreground" />
           <Input
@@ -48,15 +54,28 @@ export default function JobTitleBreakdown({
             className="pl-9"
           />
         </div>
-        {selectedJobTitle && jobTitleAvgSalary != null && (
+        {selectedRow && (
           <div className="mt-3 rounded-lg bg-primary/5 border border-primary/15 px-4 py-3">
-            <p className="text-sm">
-              Average salary for{" "}
-              <span className="font-semibold">{selectedJobTitle}</span>:{" "}
-              <span className="font-bold text-primary">
-                {formatSalary(jobTitleAvgSalary)}
-              </span>
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-sm">
+                <span className="font-semibold">{selectedRow.job_title}</span>
+                {" — "}
+                avg{" "}
+                <span className="font-bold text-primary">
+                  {formatSalary(selectedRow.avg_salary)}
+                </span>
+                {" · "}
+                <span className="text-muted-foreground">
+                  {selectedRow.headcount} employee{selectedRow.headcount !== 1 ? "s" : ""}
+                </span>
+              </p>
+              <button
+                onClick={() => setSelectedTitle(null)}
+                className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </div>
         )}
       </CardHeader>
@@ -77,7 +96,15 @@ export default function JobTitleBreakdown({
               </TableHeader>
               <TableBody>
                 {sortedData.map((row) => (
-                  <TableRow key={row.job_title} className="transition-colors hover:bg-muted/30">
+                  <TableRow
+                    key={row.job_title}
+                    className={`cursor-pointer transition-colors ${
+                      selectedTitle === row.job_title
+                        ? "bg-primary/5 hover:bg-primary/10"
+                        : "hover:bg-muted/30"
+                    }`}
+                    onClick={() => handleRowClick(row.job_title)}
+                  >
                     <TableCell className="font-medium">
                       {row.job_title}
                     </TableCell>
