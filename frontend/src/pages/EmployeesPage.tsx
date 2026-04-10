@@ -152,6 +152,11 @@ export default function EmployeesPage() {
         )}
       </div>
 
+      {/* Pagination (above table for quick access) */}
+      {data && (
+        <EmployeePagination meta={data.meta} onPageChange={setPage} />
+      )}
+
       {/* Content */}
       {isLoading && (
         <div className="flex h-48 items-center justify-center rounded-xl border bg-card">
@@ -171,14 +176,11 @@ export default function EmployeesPage() {
       )}
 
       {data && (
-        <>
-          <EmployeeTable
-            employees={data.employees}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-          <EmployeePagination meta={data.meta} onPageChange={setPage} />
-        </>
+        <EmployeeTable
+          employees={data.employees}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       )}
 
       {/* Create/Edit Form Modal */}
