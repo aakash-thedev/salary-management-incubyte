@@ -25,7 +25,7 @@ export default function InsightsPage() {
   const insights = insightsData?.insights;
 
   const handleCountryChange = (value: string | null) => {
-    setCountry(value || "");
+    setCountry(!value || value === "all" ? "" : value);
   };
 
   return (
@@ -42,11 +42,12 @@ export default function InsightsPage() {
       <div className="flex flex-wrap items-end gap-4">
         <div className="space-y-1.5">
           <label id="insights-country-label" className="text-sm font-medium">Country</label>
-          <Select value={country || undefined} onValueChange={handleCountryChange}>
+          <Select value={country || "all"} onValueChange={handleCountryChange}>
             <SelectTrigger className="w-[250px]" aria-labelledby="insights-country-label">
               <SelectValue placeholder="Select a country..." />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="all">Select a country...</SelectItem>
               {countriesLoading ? (
                 <SelectItem value="_loading" disabled>
                   Loading...
