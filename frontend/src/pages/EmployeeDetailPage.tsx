@@ -31,12 +31,14 @@ function SalaryComparisonCard({
   headcount,
   employeeSalary,
   scope,
+  currency,
 }: {
   label: string;
   avgSalary: number | null;
   headcount: number;
   employeeSalary: number;
   scope: string;
+  currency: string;
 }) {
   if (avgSalary == null) return null;
 
@@ -59,7 +61,7 @@ function SalaryComparisonCard({
             <span>Avg in {scope}</span>
           </div>
           <span className="font-semibold tabular-nums">
-            {formatSalary(avgSalary)}
+            {formatSalary(avgSalary, currency)}
           </span>
         </div>
         <div className="flex items-center justify-between">
@@ -272,6 +274,7 @@ export default function EmployeeDetailPage() {
                 headcount={comparison.country_headcount}
                 employeeSalary={salary}
                 scope={employee.country}
+                currency={employee.currency}
               />
               <SalaryComparisonCard
                 label={`vs. ${employee.job_title} in ${employee.country}`}
@@ -279,6 +282,7 @@ export default function EmployeeDetailPage() {
                 headcount={comparison.role_headcount}
                 employeeSalary={salary}
                 scope="role"
+                currency={employee.currency}
               />
             </div>
           </div>
