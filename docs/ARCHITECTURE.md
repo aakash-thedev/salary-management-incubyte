@@ -93,19 +93,29 @@ CREATE INDEX idx_employees_country_job_title ON employees(country, job_title);
 ## API Design
 
 ```
-GET    /api/v1/employees          — List employees (paginated, filterable)
-POST   /api/v1/employees          — Create employee
-GET    /api/v1/employees/:id      — Show employee
-PUT    /api/v1/employees/:id      — Update employee
-DELETE /api/v1/employees/:id      — Delete employee
-GET    /api/v1/insights           — Salary insights (by country, optional job_title)
-GET    /api/v1/employees/countries — List distinct countries (for dropdowns)
-GET    /api/v1/employees/job_titles — List distinct job titles (for dropdowns)
+GET    /api/v1/employees              — List employees (paginated, filterable by country, employment_type, search)
+POST   /api/v1/employees              — Create employee
+GET    /api/v1/employees/:id          — Show employee with salary comparison data (country avg, role avg)
+PUT    /api/v1/employees/:id          — Update employee
+DELETE /api/v1/employees/:id          — Delete employee
+GET    /api/v1/insights?country=...   — Salary insights: stats, breakdowns, top earners, currency
+GET    /api/v1/employees/countries    — List distinct countries (for dropdowns)
+GET    /api/v1/employees/job_titles   — List distinct job titles (for dropdowns)
+```
+
+### Frontend Routes
+
+```
+/employees          — Paginated employee list with filters and inline pagination
+/employees/:id      — Employee detail page with salary benchmarks
+/insights           — Salary insights dashboard
 ```
 
 ## Key Architectural Decisions
 
-1. **Service object for insights** — `SalaryInsightsService` encapsulates all aggregation logic in a single testable class, keeping the controller thin.
-2. **Database-level aggregations** — All min/max/avg/count calculations use SQL, not Ruby. This is critical for performance with 10K+ rows.
-3. **Pagination with Kaminari** — 25 employees per page. The API returns pagination metadata (total count, total pages, current page) in the response.
+1. **Service object for insights** — `SalaryInsightsService` encapsulates all aggregation logic (country stats, median via PERCENTILE_CONT, employment type breakdown, department summary, top earners) in a single testable class, keeping the controller thin.
+2. **Database-level aggregations** — All min/max/avg/median/count calculations use SQL, not Ruby. This is critical for performance with 10K+ rows.
+3. **Pagination with Kaminari** — 25 employees per page. The API returns pagination metadata (total count, total pages, current page) in the response. Pagination controls are placed above the table for quick access.
 4. **Composite index on (country, job_title)** — Optimizes the most common query pattern: salary stats for a job title within a country.
+5. **Local currency display** — Each country has a primary currency derived from employee data (via `GROUP BY currency` with `COUNT`). All salary metrics on the insights page and employee detail benchmarks are formatted in the country's local currency.
+6. **Realistic seed data** — Salary ranges per country use market-accurate local currency values (e.g., India ₹4L–₹50L, Japan ¥4M–¥20M) with currency-appropriate rounding steps.

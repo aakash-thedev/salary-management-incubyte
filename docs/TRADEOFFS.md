@@ -144,3 +144,18 @@
 **Trade-off:**
 - Could use ActiveRecord scopes on the model instead, which is more "Rails-way"
 - Service object is a better fit when the logic spans multiple queries and returns a composite result
+
+---
+
+## 9. Currency Display: USD Everywhere vs Local Currency per Country
+
+**Decision: Local currency per country**
+
+**Why:**
+- An HR Manager reviewing Indian salaries thinks in INR, not USD. Showing $45,000 for an Indian employee is confusing — ₹26,00,000 is immediately meaningful.
+- The seed data assigns realistic salary ranges in each country's local currency (India ₹4L–₹50L, Japan ¥4M–¥20M, etc.) so the numbers match real-world expectations.
+- The insights API returns the primary currency for the selected country, and all frontend components format salaries accordingly.
+
+**Trade-off:**
+- Salary values across countries are not directly comparable (₹26L ≠ $26K). Multi-currency conversion is intentionally out of scope.
+- If cross-country salary comparison is needed in the future, a conversion layer or "normalize to USD" toggle would be required.

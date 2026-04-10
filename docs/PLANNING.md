@@ -27,16 +27,18 @@ This tool centralizes employee data with instant access to key salary metrics, e
 
 ### Employee Management
 - **Add Employee** — Form with full name, job title, department, country, salary, currency, employment type, hire date
-- **View Employees** — Paginated table with search (by name) and filter (by country)
+- **View Employees** — Paginated table with search (by name) and filter (by country, employment type)
+- **Employee Detail** — Individual employee profile with salary benchmarks comparing against country average and role average (% above/below), plus tenure calculation
 - **Edit Employee** — Pre-filled form to update any field
 - **Delete Employee** — Confirmation dialog before removal
 
 ### Salary Insights Dashboard
-- **Country-level aggregations** — Min, max, and average salary for a selected country
-- **Job title breakdown** — Average salary for a specific job title within a country
+- **Country-level aggregations** — Min, max, average, and median salary for a selected country, displayed in the country's local currency
+- **Employment type breakdown** — Count, percentage share, and average salary per type (full-time, part-time, contract)
+- **Department summary** — Headcount and average salary grouped by department
+- **Job title breakdown** — Average salary and headcount per job title, with inline row selection for quick inspection
 - **Headcount by country** — Total number of employees per country
 - **Top earners** — Top 5 highest-paid employees in a country
-- **Additional metrics** — Salary distribution by employment type, department headcount
 
 ### Seed Data
 - Script to populate 10,000 employees using `first_names.txt` × `last_names.txt`
@@ -64,7 +66,7 @@ This tool centralizes employee data with instant access to key salary metrics, e
 ## Success Criteria
 
 1. An HR Manager can add, view, edit, and delete employees through the UI
-2. Salary insights update dynamically when a country or job title is selected
+2. Salary insights update dynamically when a country is selected, with all metrics shown in local currency
 3. The seed script loads 10,000 employees in under 10 seconds
 4. All core business logic is covered by fast, deterministic unit tests
 5. The application is deployed and accessible via public URLs
