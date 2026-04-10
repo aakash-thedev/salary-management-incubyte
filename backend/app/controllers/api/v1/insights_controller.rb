@@ -16,6 +16,10 @@ module Api
         # Add top earners (as JSON-friendly hashes)
         insights[:top_earners] = service.top_earners.as_json(except: [:created_at, :updated_at])
 
+        # Add employment type breakdown and department summary
+        insights[:employment_type_breakdown] = service.employment_type_breakdown
+        insights[:department_summary] = service.department_summary
+
         # Add job title average if job_title param is provided
         if params[:job_title].present?
           insights[:job_title_avg_salary] = service.job_title_avg_salary(params[:job_title])

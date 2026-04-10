@@ -53,6 +53,43 @@ class SalaryInsightsService
       end
   end
 
+  # Returns count and average salary grouped by employment type
+  def employment_type_breakdown
+    @scope
+      .group(:employment_type)
+      .pluck(
+        Arel.sql("employment_type"),
+        Arel.sql("AVG(salary)"),
+        Arel.sql("COUNT(*)")
+      )
+      .map do |employment_type, avg_salary, headcount|
+        {
+          employment_type: employment_type,
+          avg_salary: avg_salary.to_f.round(2),
+          headcount: headcount
+        }
+      end
+  end
+
+  # Returns headcount and average salary grouped by department (excludes nil departments)
+  def department_summary
+    @scope
+      .where.not(department: [nil, ""])
+      .group(:department)
+      .pluck(
+        Arel.sql("department"),
+        Arel.sql("AVG(salary)"),
+        Arel.sql("COUNT(*)")
+      )
+      .map do |department, avg_salary, headcount|
+        {
+          department: department,
+          avg_salary: avg_salary.to_f.round(2),
+          headcount: headcount
+        }
+      end
+  end
+
   private
 
   # Compute median salary using SQL PERCENTILE_CONT (PostgreSQL)

@@ -3,16 +3,16 @@ require 'rails_helper'
 RSpec.describe SalaryInsightsService do
   before(:each) do
     # Employees in United States
-    create(:employee, full_name: "Alice Johnson", country: "United States", job_title: "Software Engineer", salary: 120_000)
-    create(:employee, full_name: "Bob Smith", country: "United States", job_title: "Software Engineer", salary: 80_000)
-    create(:employee, full_name: "Carol Davis", country: "United States", job_title: "Product Manager", salary: 110_000)
-    create(:employee, full_name: "Dave Wilson", country: "United States", job_title: "Data Analyst", salary: 70_000)
-    create(:employee, full_name: "Eve Martinez", country: "United States", job_title: "HR Specialist", salary: 60_000)
+    create(:employee, full_name: "Alice Johnson", country: "United States", job_title: "Software Engineer", salary: 120_000, employment_type: "full_time", department: "Engineering")
+    create(:employee, full_name: "Bob Smith", country: "United States", job_title: "Software Engineer", salary: 80_000, employment_type: "contract", department: "Engineering")
+    create(:employee, full_name: "Carol Davis", country: "United States", job_title: "Product Manager", salary: 110_000, employment_type: "full_time", department: "Product")
+    create(:employee, full_name: "Dave Wilson", country: "United States", job_title: "Data Analyst", salary: 70_000, employment_type: "part_time", department: "Data")
+    create(:employee, full_name: "Eve Martinez", country: "United States", job_title: "HR Specialist", salary: 60_000, employment_type: "full_time", department: nil)
 
     # Employees in India
-    create(:employee, full_name: "Farhan Khan", country: "India", job_title: "Software Engineer", salary: 30_000)
-    create(:employee, full_name: "Geeta Patel", country: "India", job_title: "Software Engineer", salary: 25_000)
-    create(:employee, full_name: "Hari Sharma", country: "India", job_title: "Data Analyst", salary: 20_000)
+    create(:employee, full_name: "Farhan Khan", country: "India", job_title: "Software Engineer", salary: 30_000, employment_type: "full_time", department: "Engineering")
+    create(:employee, full_name: "Geeta Patel", country: "India", job_title: "Software Engineer", salary: 25_000, employment_type: "contract", department: "Engineering")
+    create(:employee, full_name: "Hari Sharma", country: "India", job_title: "Data Analyst", salary: 20_000, employment_type: "full_time", department: "Data")
   end
 
   describe "#country_insights" do
@@ -119,6 +119,44 @@ RSpec.describe SalaryInsightsService do
 
       expect(job_titles).to contain_exactly("Software Engineer", "Data Analyst")
       expect(job_titles).not_to include("Product Manager", "HR Specialist")
+    end
+  end
+
+  describe "#employment_type_breakdown" do
+    it "returns count and average salary grouped by employment type" do
+      breakdown = described_class.new(country: "United States").employment_type_breakdown
+
+      expect(breakdown).to include(
+        { employment_type: "full_time", avg_salary: 96_666.67, headcount: 3 },
+        { employment_type: "contract", avg_salary: 80_000.0, headcount: 1 },
+        { employment_type: "part_time", avg_salary: 70_000.0, headcount: 1 }
+      )
+    end
+
+    it "only includes types present in the country" do
+      breakdown = described_class.new(country: "India").employment_type_breakdown
+      types = breakdown.map { |row| row[:employment_type] }
+
+      expect(types).to contain_exactly("full_time", "contract")
+    end
+  end
+
+  describe "#department_summary" do
+    it "returns headcount and average salary grouped by department" do
+      summary = described_class.new(country: "United States").department_summary
+
+      expect(summary).to include(
+        { department: "Engineering", avg_salary: 100_000.0, headcount: 2 },
+        { department: "Product", avg_salary: 110_000.0, headcount: 1 },
+        { department: "Data", avg_salary: 70_000.0, headcount: 1 }
+      )
+    end
+
+    it "excludes employees with no department" do
+      summary = described_class.new(country: "United States").department_summary
+      departments = summary.map { |row| row[:department] }
+
+      expect(departments).not_to include(nil)
     end
   end
 end
