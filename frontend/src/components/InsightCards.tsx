@@ -44,7 +44,10 @@ export default function InsightCards({ insights }: InsightCardsProps) {
     avg_salary,
     median_salary,
     headcount,
+    currency,
   } = insights;
+
+  const cur = currency ?? "USD";
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -57,28 +60,28 @@ export default function InsightCards({ insights }: InsightCardsProps) {
       />
       <StatCard
         title="Average Salary"
-        value={avg_salary != null ? formatSalary(avg_salary) : "—"}
+        value={avg_salary != null ? formatSalary(avg_salary, cur) : "—"}
         description="across all roles"
         icon={TrendingUp}
         iconClassName="bg-emerald-50 text-emerald-600"
       />
       <StatCard
         title="Median Salary"
-        value={median_salary != null ? formatSalary(median_salary) : "—"}
+        value={median_salary != null ? formatSalary(median_salary, cur) : "—"}
         description="middle value"
         icon={ArrowUpDown}
         iconClassName="bg-amber-50 text-amber-600"
       />
       <StatCard
         title="Minimum Salary"
-        value={min_salary != null ? formatSalary(min_salary) : "—"}
+        value={min_salary != null ? formatSalary(min_salary, cur) : "—"}
         description="lowest paid"
         icon={ArrowDown}
         iconClassName="bg-sky-50 text-sky-600"
       />
       <StatCard
         title="Maximum Salary"
-        value={max_salary != null ? formatSalary(max_salary) : "—"}
+        value={max_salary != null ? formatSalary(max_salary, cur) : "—"}
         description="highest paid"
         icon={ArrowUp}
         iconClassName="bg-violet-50 text-violet-600"

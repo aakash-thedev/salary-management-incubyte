@@ -24,6 +24,7 @@ export interface SalaryInsights {
   avg_salary: number | null;
   median_salary: number | null;
   headcount: number;
+  currency: string | null;
   salary_by_job_title: JobTitleSalary[];
   top_earners: Employee[];
   employment_type_breakdown: EmploymentTypeBreakdown[];

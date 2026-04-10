@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 interface EmploymentTypeBreakdownProps {
   data: BreakdownData[];
   totalHeadcount: number;
+  currency: string;
 }
 
 const typeBadgeClass: Record<string, string> = {
@@ -26,6 +27,7 @@ const typeBadgeClass: Record<string, string> = {
 export default function EmploymentTypeBreakdown({
   data,
   totalHeadcount,
+  currency,
 }: EmploymentTypeBreakdownProps) {
   const sortedData = [...data].sort((a, b) => b.headcount - a.headcount);
 
@@ -76,7 +78,7 @@ export default function EmploymentTypeBreakdown({
                         {percentage}%
                       </TableCell>
                       <TableCell className="text-right font-semibold tabular-nums">
-                        {formatSalary(row.avg_salary)}
+                        {formatSalary(row.avg_salary, currency)}
                       </TableCell>
                     </TableRow>
                   );

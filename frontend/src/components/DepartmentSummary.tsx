@@ -13,9 +13,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DepartmentSummaryProps {
   data: DepartmentData[];
+  currency: string;
 }
 
-export default function DepartmentSummary({ data }: DepartmentSummaryProps) {
+export default function DepartmentSummary({ data, currency }: DepartmentSummaryProps) {
   const sortedData = [...data].sort((a, b) => b.headcount - a.headcount);
 
   return (
@@ -51,7 +52,7 @@ export default function DepartmentSummary({ data }: DepartmentSummaryProps) {
                       {row.headcount}
                     </TableCell>
                     <TableCell className="text-right font-semibold tabular-nums">
-                      {formatSalary(row.avg_salary)}
+                      {formatSalary(row.avg_salary, currency)}
                     </TableCell>
                   </TableRow>
                 ))}

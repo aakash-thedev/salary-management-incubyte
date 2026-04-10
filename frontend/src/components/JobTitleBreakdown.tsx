@@ -15,9 +15,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface JobTitleBreakdownProps {
   data: JobTitleSalary[];
+  currency: string;
 }
 
-export default function JobTitleBreakdown({ data }: JobTitleBreakdownProps) {
+export default function JobTitleBreakdown({ data, currency }: JobTitleBreakdownProps) {
   const [filter, setFilter] = useState("");
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
 
@@ -62,7 +63,7 @@ export default function JobTitleBreakdown({ data }: JobTitleBreakdownProps) {
                 {" — "}
                 avg{" "}
                 <span className="font-bold text-primary">
-                  {formatSalary(selectedRow.avg_salary)}
+                  {formatSalary(selectedRow.avg_salary, currency)}
                 </span>
                 {" · "}
                 <span className="text-muted-foreground">
@@ -109,7 +110,7 @@ export default function JobTitleBreakdown({ data }: JobTitleBreakdownProps) {
                       {row.job_title}
                     </TableCell>
                     <TableCell className="text-right font-semibold tabular-nums">
-                      {formatSalary(row.avg_salary)}
+                      {formatSalary(row.avg_salary, currency)}
                     </TableCell>
                     <TableCell className="text-right text-muted-foreground tabular-nums">
                       {row.headcount}

@@ -106,13 +106,20 @@ export default function InsightsPage() {
             <EmploymentTypeBreakdown
               data={insights.employment_type_breakdown}
               totalHeadcount={insights.headcount}
+              currency={insights.currency ?? "USD"}
             />
-            <DepartmentSummary data={insights.department_summary} />
+            <DepartmentSummary
+              data={insights.department_summary}
+              currency={insights.currency ?? "USD"}
+            />
           </div>
 
           {/* Two-column layout: Job Title Breakdown + Top Earners */}
           <div className="grid gap-6 lg:grid-cols-2">
-            <JobTitleBreakdown data={insights.salary_by_job_title} />
+            <JobTitleBreakdown
+              data={insights.salary_by_job_title}
+              currency={insights.currency ?? "USD"}
+            />
             <TopEarners employees={insights.top_earners} />
           </div>
         </div>
