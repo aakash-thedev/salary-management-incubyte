@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Plus, Search, X } from "lucide-react";
 import type { Employee } from "@/types/employee";
 
 export default function EmployeesPage() {
@@ -61,27 +62,35 @@ export default function EmployeesPage() {
     setShowForm(true);
   };
 
+  const hasFilters = search || country;
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Employees</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="mt-1 text-sm text-muted-foreground">
             Manage your organization&apos;s employee records.
           </p>
         </div>
-        <Button onClick={handleAddNew}>Add Employee</Button>
+        <Button onClick={handleAddNew} className="gap-2">
+          <Plus className="h-4 w-4" />
+          Add Employee
+        </Button>
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-4">
-        <Input
-          placeholder="Search by name..."
-          value={search}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          className="max-w-sm"
-        />
+      <div className="flex items-center gap-3">
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search by name..."
+            value={search}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            className="pl-9"
+          />
+        </div>
         <Select value={country || "all"} onValueChange={handleCountryChange}>
           <SelectTrigger className="w-[200px]">
             <SelectValue placeholder="All Countries" />
@@ -95,30 +104,35 @@ export default function EmployeesPage() {
             ))}
           </SelectContent>
         </Select>
-        {(search || country) && (
+        {hasFilters && (
           <Button
             variant="ghost"
             size="sm"
+            className="gap-1.5 text-muted-foreground"
             onClick={() => {
               setSearch("");
               setCountry("");
               setPage(1);
             }}
           >
-            Clear filters
+            <X className="h-3.5 w-3.5" />
+            Clear
           </Button>
         )}
       </div>
 
       {/* Content */}
       {isLoading && (
-        <div className="flex h-48 items-center justify-center">
-          <p className="text-muted-foreground">Loading employees...</p>
+        <div className="flex h-48 items-center justify-center rounded-xl border bg-card">
+          <div className="flex items-center gap-3 text-muted-foreground">
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            Loading employees...
+          </div>
         </div>
       )}
 
       {isError && (
-        <div className="flex h-48 items-center justify-center rounded-md border border-destructive/50 bg-destructive/10">
+        <div className="flex h-48 items-center justify-center rounded-xl border border-destructive/30 bg-destructive/5">
           <p className="text-destructive">
             Failed to load employees. Please check that the backend is running.
           </p>

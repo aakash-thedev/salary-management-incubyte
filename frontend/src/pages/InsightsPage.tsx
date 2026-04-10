@@ -4,6 +4,7 @@ import { useInsights } from "@/hooks/useInsights";
 import InsightCards from "@/components/InsightCards";
 import JobTitleBreakdown from "@/components/JobTitleBreakdown";
 import TopEarners from "@/components/TopEarners";
+import { BarChart3 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -40,14 +41,14 @@ export default function InsightsPage() {
       {/* Page Header */}
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Salary Insights</h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="mt-1 text-sm text-muted-foreground">
           Analyze salary data across countries and job titles.
         </p>
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-4">
-        <div className="space-y-1">
+      <div className="flex flex-wrap items-end gap-4">
+        <div className="space-y-1.5">
           <label className="text-sm font-medium">Country</label>
           <Select value={country || undefined} onValueChange={handleCountryChange}>
             <SelectTrigger className="w-[250px]">
@@ -70,7 +71,7 @@ export default function InsightsPage() {
         </div>
 
         {country && (
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <label className="text-sm font-medium">Job Title (optional)</label>
             <Select
               value={jobTitle || "all"}
@@ -94,23 +95,30 @@ export default function InsightsPage() {
 
       {/* No Country Selected */}
       {!country && (
-        <div className="flex h-64 items-center justify-center rounded-md border border-dashed">
-          <p className="text-muted-foreground">
-            Select a country to view salary insights.
+        <div className="flex h-64 flex-col items-center justify-center rounded-xl border border-dashed bg-card">
+          <BarChart3 className="mb-3 h-10 w-10 text-muted-foreground/40" />
+          <p className="font-medium text-muted-foreground">
+            Select a country to view salary insights
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground/60">
+            Choose from {countries?.length || 0} available countries above.
           </p>
         </div>
       )}
 
       {/* Loading */}
       {country && isLoading && (
-        <div className="flex h-64 items-center justify-center">
-          <p className="text-muted-foreground">Loading insights...</p>
+        <div className="flex h-64 items-center justify-center rounded-xl border bg-card">
+          <div className="flex items-center gap-3 text-muted-foreground">
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            Loading insights...
+          </div>
         </div>
       )}
 
       {/* Error */}
       {country && isError && (
-        <div className="flex h-48 items-center justify-center rounded-md border border-destructive/50 bg-destructive/10">
+        <div className="flex h-48 items-center justify-center rounded-xl border border-destructive/30 bg-destructive/5">
           <p className="text-destructive">
             Failed to load insights. Please check that the backend is running.
           </p>

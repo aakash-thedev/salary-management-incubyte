@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { JobTitleSalary } from "@/types/insights";
 import { formatSalary } from "@/lib/formatters";
 import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -35,19 +36,20 @@ export default function JobTitleBreakdown({
   );
 
   return (
-    <Card>
+    <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle>Salary by Job Title</CardTitle>
-        <div className="flex items-center gap-4 pt-2">
+        <CardTitle className="text-lg">Salary by Job Title</CardTitle>
+        <div className="relative pt-2">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 translate-y-[-25%] text-muted-foreground" />
           <Input
             placeholder="Filter job titles..."
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="max-w-sm"
+            className="pl-9"
           />
         </div>
         {selectedJobTitle && jobTitleAvgSalary != null && (
-          <div className="mt-3 rounded-md bg-muted px-4 py-3">
+          <div className="mt-3 rounded-lg bg-primary/5 border border-primary/15 px-4 py-3">
             <p className="text-sm">
               Average salary for{" "}
               <span className="font-semibold">{selectedJobTitle}</span>:{" "}
@@ -64,25 +66,25 @@ export default function JobTitleBreakdown({
             No job titles found.
           </p>
         ) : (
-          <div className="rounded-md border">
+          <div className="overflow-hidden rounded-lg border">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Job Title</TableHead>
-                  <TableHead className="text-right">Avg Salary</TableHead>
-                  <TableHead className="text-right">Employees</TableHead>
+                <TableRow className="bg-muted/50 hover:bg-muted/50">
+                  <TableHead className="font-semibold">Job Title</TableHead>
+                  <TableHead className="text-right font-semibold">Avg Salary</TableHead>
+                  <TableHead className="text-right font-semibold">Employees</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {sortedData.map((row) => (
-                  <TableRow key={row.job_title}>
+                  <TableRow key={row.job_title} className="transition-colors hover:bg-muted/30">
                     <TableCell className="font-medium">
                       {row.job_title}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right font-semibold tabular-nums">
                       {formatSalary(row.avg_salary)}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right text-muted-foreground tabular-nums">
                       {row.headcount}
                     </TableCell>
                   </TableRow>
