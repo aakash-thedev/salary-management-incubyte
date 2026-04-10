@@ -34,7 +34,7 @@ module Api
         }
 
         render json: {
-          employee: @employee.as_json,
+          employee: @employee.as_json(except: [:created_at, :updated_at]),
           comparison: comparison
         }
       end
@@ -44,7 +44,7 @@ module Api
         employee = Employee.new(employee_params)
 
         if employee.save
-          render json: { employee: employee.as_json }, status: :created
+          render json: { employee: employee.as_json(except: [:created_at, :updated_at]) }, status: :created
         else
           render json: { errors: employee.errors }, status: :unprocessable_entity
         end
@@ -53,7 +53,7 @@ module Api
       # PUT /api/v1/employees/:id
       def update
         if @employee.update(employee_params)
-          render json: { employee: @employee.as_json }
+          render json: { employee: @employee.as_json(except: [:created_at, :updated_at]) }
         else
           render json: { errors: @employee.errors }, status: :unprocessable_entity
         end
