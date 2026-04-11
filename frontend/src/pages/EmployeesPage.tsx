@@ -161,11 +161,16 @@ export default function EmployeesPage() {
 
       {/* Content */}
       {isLoading && (
-        <div className="flex h-48 items-center justify-center rounded-xl border bg-card">
+        <div className="flex h-64 flex-col items-center justify-center gap-4 rounded-xl border bg-card px-6 text-center">
           <div className="flex items-center gap-3 text-muted-foreground">
             <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-            Loading employees...
+            <span className="font-medium">Loading employees...</span>
           </div>
+          <p className="max-w-md text-sm text-muted-foreground/70 leading-relaxed">
+            The backend is hosted on a free Render instance which sleeps after
+            inactivity. The first request can take up to 50 seconds to wake up —
+            sit tight! Once it's up, everything will be smooth and fast.
+          </p>
         </div>
       )}
 
